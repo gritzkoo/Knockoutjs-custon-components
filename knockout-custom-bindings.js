@@ -385,16 +385,6 @@ ko.bindingHandlers.numerico = {
     }
 };
 
-ko.bindingHandlers.maxLength = {
-    update: function(element, valueAccessor, allBindings){
-        if(allBindings().value()){
-            allBindings()
-              .value(allBindings().value().toString().substr(0, valueAccessor()));
-        }
-    }
-};
-
-
 /*
     FADEVISIBLE
         MODO DE USO:
@@ -524,22 +514,6 @@ ko.bindingHandlers.multiDatesPicker2 = {
     }
 };
 
-ko.bindingHandlers.printarDispersao = {
-    update:function(element, valueAccessor) {
-        
-        if ($(element).text() != "") {
-            $(element).text($(element).text() + "%")
-        }
-        
-        if(parseInt(valueAccessor()()) >= 10) {
-            $(element).removeClass("dispersao-menor");
-            $(element).addClass("dispersao-maior");
-        } else {
-            $(element).addClass("dispersao-menor");
-            $(element).removeClass("dispersao-maior");
-        }
-    }
-};
 
 /*
     TOOLTIP
@@ -730,19 +704,21 @@ ko.bindingHandlers.propValue = {
             />
 */
 ko.bindingHandlers.masked = {
-        init: function(element, valueAccessor, allBindingsAccessor) {
-            var mask = allBindingsAccessor().mask || {};
-            $(element).mask(mask);
-            ko.utils.registerEventHandler(element, 'focusout', function() {
-                var observable = valueAccessor();
-                observable($(element).val());
-            });
-        }, 
-        update: function (element, valueAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor());
-            $(element).val(value);
-        }
+    init: function(element, valueAccessor, allBindings){
+        var pattern = allBindings.get('pattern');
+        $(element).mask(pattern);
+        ko.utils.registerEventHandler(element, 'focusout', function() {
+            var observable = valueAccessor();
+            observable($(element).val());
+        });
+
+    },
+    update: function(element, valueAccessor){
+         var value = ko.utils.unwrapObservable(valueAccessor());
+        $(element).val(value);
+    }
 };
+
 ko.bindingHandlers.barChart = {
     init: function (element, valueAccessor, allBindings)
     {
