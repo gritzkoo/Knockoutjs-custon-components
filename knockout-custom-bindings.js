@@ -1049,3 +1049,19 @@ ko.bindingHandlers.filereader = {
         // Update the DOM element based on the supplied values here.
     }
 };
+
+ko.bindingHandlers.infinityscroll = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext)
+    {
+        var onendscreen = allBindings.get('onendscreen')||function(){};
+        // valueAccessor is the observable who handle boolean to perform callback
+        var canPerform = ko.utils.unwrapObservable(valueAccessor());
+        $(element).scroll(function()
+        {
+            if(($(this).scrollTop() + $(this).innerHeight()) >=  $(this)[0].scrollHeight && !canPerform)
+            {
+                onendscreen();
+            }
+        });
+    }
+};
